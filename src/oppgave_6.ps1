@@ -38,3 +38,13 @@ function sumPoengKortstokk {
 }
 
 Write-Output "Poengsum: $(sumPoengKortstokk -kortstokk $kortstokk)"
+
+
+$meg = $kortstokk[0..1]
+
+$kortstokk = $kortstokk[2..($kortstokk.Count -1)]
+
+$magnus = $kortstokk[2..($kortstokk.Count -1)]
+$kortstokk = $kortstokk[]
+
+
