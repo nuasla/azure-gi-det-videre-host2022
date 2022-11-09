@@ -26,9 +26,9 @@ function skrivKortstokk {
     }        
 } 
 
-skrivKortstokk($kortstokk)
+#skrivKortstokk($kortstokk)
 
-function sumPoengKortstokk {
+<# function sumPoengKortstokk {
     [OutputType([int])]
     param (
         [object[]]
@@ -46,21 +46,42 @@ function sumPoengKortstokk {
     }
     return $poengKortstokk
 }
+ #>
+function KortVerdi {
+    param (
+        [object[]]
+        $kortstokk 
+    )    
+    $bildekort = @{A=11; J=10; K=10; Q=10;}
+    $sumkort = 0
+    
+    foreach ($kort in $kortstokk){
+        # summerer kortstokk
+        if ($bildekort.ContainsKey($kort.value)) {
+            $sumkort = $sumkort + $($bildekort[$kort.value])
+            #Her plusser den på bildekort verdi.
+        }
+        
+        else {
+            $sumkort = $sumkort + $kort.value
+        }
+    }
+    return $sumkort
+}
 
-Write-Output "Poengsum: $(sumPoengKortstokk -kortstokk $kortstokk)"
-Write-Output ""
+#Write-Output "Poengsum: $(KortVerdi -kortstokk $kortstokk)"
 
 $meg = $kortstokk[0..1]
 
-Write-Output "Meg: "
-    skrivKortstokk($meg)
+#Write-Output "Meg: "
+    #skrivKortstokk($meg)
 
 $kortstokk = $kortstokk[2..($kortstokk.Count -1)]
 
 $magnus = $kortstokk[0..1]
 
-Write-Output "Magnus: "
-    skrivKortstokk($magnus)
+#Write-Output "Magnus: "
+    #skrivKortstokk($magnus)
 
 $kortstokk = $kortstokk[2..($kortstokk.Count -1)]
 
@@ -74,22 +95,33 @@ function skrivUtResultat {
         [object[]]
         $kortStokkMeg        
     )
-    Write-Output "Mine kort:"
+    Write-Output "Mine kort:" 
     skrivKortstokk($kortStokkMeg)
-Write-Output "Magnus sine kort:"
-skrivKortstokk($kortStokkMagnus)
-Write-Output "Vinner er:" $vinner
+    Write-Output "Magnus sine kort:"
+     
+    skrivKortstokk($kortStokkMagnus)
+    Write-Output "Vinner er:" $vinner
 
 }
+
 
 $blackjack = 21
 
+$Megverdi = KortVerdi -kortstokk $meg
+$Magnusverdi = KortVerdi -kortstokk $magnus
 
-if ((sumPoengKortstokk -kortstokk $meg) -eq $blackjack) {
+
+
+if ($Megverdi -eq $blackjack) {
     skrivUtResultat -vinner "meg" -kortStokkMagnus $magnus -kortStokkMeg $meg 
     
 }
-elseif ((sumPoengKortstokk -kortstokk $magnus) -eq $blackjack) {
+elseif ($Magnusverdi -eq $blackjack) {
     skrivUtResultat -vinner "magnus" -kortStokkMagnus $magnus -kortStokkMeg $meg
+    
+}
+
+else  {
+    skrivUtResultat -vinner "Ingen vinner!" -kortStokkMagnus $magnus -kortStokkMeg $meg
     
 }
