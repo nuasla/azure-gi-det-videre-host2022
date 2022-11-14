@@ -122,3 +122,4 @@ else  {
     skrivUtResultat -vinner "Ingen vinner!" -kortStokkMagnus $magnus -kortStokkMeg $meg
 }
 
+#blablalbla
