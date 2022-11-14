@@ -18,12 +18,10 @@ function skrivKortstokk {
         [object[]]
         $kortstokk
     )
-
     
     foreach ($kort in $kortstokk) {
-        Write-Output $kort
-        
-    }        
+        Write-Output "$($kort.suit.substring(0,1))$($kort.value)"
+    }
 } 
 
 #skrivKortstokk($kortstokk)
@@ -95,12 +93,9 @@ function skrivUtResultat {
         [object[]]
         $kortStokkMeg        
     )
-    Write-Output "Mine kort:" 
-    skrivKortstokk($kortStokkMeg)
-    Write-Output "Magnus sine kort:"
-     
-    skrivKortstokk($kortStokkMagnus)
-    Write-Output "Vinner er:" $vinner
+    Write-Output "magnus | $(KortVerdi -kortstokk $kortStokkMagnus) | $(skrivKortstokk -kortstokk $kortStokkMagnus)"
+    Write-Output "meg    | $(KortVerdi -kortstokk $kortStokkMeg) | $(skrivKortstokk -kortstokk $kortStokkMeg)"
+    Write-Output "Vinner: $vinner"
 
 }
 
